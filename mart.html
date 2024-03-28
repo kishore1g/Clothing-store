@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-btn.active {
+            background-color: #0056b3;
+        }
+
+        .clothing-list {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .clothing-item {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+
+        .clothing-item:hover {
+            transform: scale(1.05);
+        }
+
+        .clothing-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+		.filter-buttons {
+    text-align: right;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.filter-btn {
+    padding: 8px 12px; /* Adjusted padding */
+    margin: 0 5px;
+    border: none;
+    background-color: #dc3545; /* Red color */
+    color: #fff;
+    cursor: pointer;
+    border-radius: 20px; /* Rounder corners */
+    transition: background-color 0.3s, transform 0.3s; /* Add transform transition */
+    display: inline-block; /* Display buttons inline */
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.filter-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+    transform: translateY(-2px); /* Move button slightly up */
+}
+
+.filter-btn.active {
+    background-color: #c82333; /* Darker red for active button */
+    transform: scale(1.05); /* Scale up active button */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clothing Store</h1>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="men">Men</button>
+            <button class="filter-btn" data-filter="women">Women</button>
+            <button class="filter-btn" data-filter="children">Children</button>
+        </div>
+        <ul class="clothing-list"></ul>
+    </div>
+
+    <script>
+const clothingData = [
+    { id: 1, name: 'T-shirt', category: 'men', image: 'men-tshirt.jpeg', price: 20, discount: 10 },
+    { id: 2, name: 'Dress', category: 'women', image: 'women1.avif', price: 50, discount: 20 },
+    { id: 3, name: 'Jeans', category: 'men', image: 'img.avif', price: 40, discount: 15 },
+    { id: 4, name: 'Skirt', category: 'women', image: 'women2.avif', price: 30, discount: 5 },
+    { id: 5, name: 'Shirt', category: 'children', image: 'c1.avif', price: 25, discount: 8 },
+    { id: 6, name: 'Shorts', category: 'children', image: 'c2.avif', price: 20, discount: 0 },
+    // Add more clothing items with images as needed
+];
+
+const clothingList = document.querySelector('.clothing-list');
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+// Render initial clothing items
+renderClothingItems(clothingData);
+
+// Add click event listeners to filter buttons
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        filterClothingItems(filter);
+        updateActiveButton(button);
+    });
+});
+
+// Function to render clothing items
+function renderClothingItems(items) {
+    clothingList.innerHTML = '';
+    items.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.className = 'clothing-item';
+
+        const itemImage = document.createElement('img');
+        itemImage.src = `images/${item.image}`; // Assuming images are in the 'images' folder
+        itemImage.alt = item.name;
+
+        const itemName = document.createElement('p');
+        itemName.textContent = item.name;
+
+        const itemDetails = document.createElement('p');
+        itemDetails.textContent = `Price: $${item.price} - Discount: ${item.discount}%`;
+
+        listItem.appendChild(itemImage);
+        listItem.appendChild(itemName);
+        listItem.appendChild(itemDetails);
+        clothingList.appendChild(listItem);
+    });
+}
+
+// Function to filter clothing items
+function filterClothingItems(filter) {
+    const filteredItems = filter === 'all'
+        ? clothingData
+        : clothingData.filter(item => item.category === filter);
+    renderClothingItems(filteredItems);
+}
+
+// Function to update active button
+function updateActiveButton(button) {
+    filterButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+}
+
+    </script>
+</body>
+</html>
